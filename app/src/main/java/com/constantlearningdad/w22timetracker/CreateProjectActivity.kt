@@ -54,13 +54,14 @@ class CreateProjectActivity : AppCompatActivity() {
         //connect RecyclerView with FirestoreDB via the ViewModel
         val viewModel : ProjectViewModel by viewModels()
         viewModel.getProjects().observe(this, { projects ->
+            binding.recyclerView.adapter = ProjectAdapter(this, projects)
 //            binding.linearLayout.removeAllViews()
-            for (project in projects)
-            {
+//            for (project in projects)
+//            {
 //                var newProjectTextView = TextView(this)
 //                newProjectTextView.text = project.toString()
 //                binding.linearLayout.addView(newProjectTextView)
-            }
+//            }
         })
     }
 }

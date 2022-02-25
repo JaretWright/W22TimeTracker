@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         tools:text="Major Assignment"
         android:gravity="center_horizontal"
-        android:textSize="14sp"
+        android:textSize="20sp"
         android:padding="3dp"
         android:textStyle="bold"/>
 
