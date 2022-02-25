@@ -2,9 +2,11 @@ package com.constantlearningdad.w22timetracker
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import com.constantlearningdad.w22timetracker.databinding.ActivityCreateProjectBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -51,9 +53,14 @@ class CreateProjectActivity : AppCompatActivity() {
 
         //connect RecyclerView with FirestoreDB via the ViewModel
         val viewModel : ProjectViewModel by viewModels()
-        viewModel.getProjects().observe(this, {
-            for (project in it)
-                Log.i("DB_Response","inside CreateProjectActivity, project: $project")
+        viewModel.getProjects().observe(this, { projects ->
+//            binding.linearLayout.removeAllViews()
+            for (project in projects)
+            {
+//                var newProjectTextView = TextView(this)
+//                newProjectTextView.text = project.toString()
+//                binding.linearLayout.addView(newProjectTextView)
+            }
         })
     }
 }

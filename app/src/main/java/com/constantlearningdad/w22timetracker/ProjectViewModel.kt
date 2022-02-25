@@ -39,6 +39,8 @@ class ProjectViewModel : ViewModel() {
                     for (document in documents)
                     {
                         Log.i("DB_Response", "${document.data}")
+
+                        //convert the JSON document into a Project object
                         val project = document.toObject(Project::class.java)
                         projectList.add(project)
                     }
