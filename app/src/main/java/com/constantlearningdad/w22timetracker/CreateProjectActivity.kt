@@ -73,7 +73,9 @@ class CreateProjectActivity : AppCompatActivity(), ProjectAdapter.ProjectItemLis
     }
 
     override fun projectSelected(project: Project) {
-        Toast.makeText(this, "Project Selected: $project", Toast.LENGTH_LONG).show()
+        var intent = Intent(this, LogTimeActivity::class.java)
+        intent.putExtra("projectID", project.id)
+        startActivity(intent)
     }
 
 }
