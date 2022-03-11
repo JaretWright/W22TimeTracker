@@ -1,5 +1,6 @@
 package com.constantlearningdad.w22timetracker
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
@@ -13,7 +14,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
-class CreateProjectActivity : AppCompatActivity() {
+class CreateProjectActivity : AppCompatActivity(), ProjectAdapter.ProjectItemListener {
     //private ActivityCreateProjectBinding binding;  Java version of declaring the variable
     private lateinit var binding : ActivityCreateProjectBinding
     private lateinit var auth: FirebaseAuth
@@ -30,8 +31,7 @@ class CreateProjectActivity : AppCompatActivity() {
             var projectName = binding.projectNameEditText.text.toString().trim()
             var description = binding.descriptionEditText.text.toString().trim()
 
-            if (projectName.isNotEmpty() && description.isNotEmpty())
-            {
+            if (projectName.isNotEmpty() && description.isNotEmpty()) {
                 //connect to the Firestore DB
                 val db = FirebaseFirestore.getInstance().collection("projects")
 
@@ -44,17 +44,24 @@ class CreateProjectActivity : AppCompatActivity() {
 
                 //save our new Project object to the db using the unique id
                 db.document(id).set(project)
-                    .addOnSuccessListener { Toast.makeText(this,"DB Updated",Toast.LENGTH_LONG).show() }
-                    .addOnFailureListener { exception -> Log.w("DB_Issue", exception!!.localizedMessage) }
-            }
-            else
-                Toast.makeText(this, "name and description must be filled in", Toast.LENGTH_LONG).show()
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "DB Updated", Toast.LENGTH_LONG).show()
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w(
+                            "DB_Issue",
+                            exception!!.localizedMessage
+                        )
+                    }
+            } else
+                Toast.makeText(this, "name and description must be filled in", Toast.LENGTH_LONG)
+                    .show()
         }
 
         //connect RecyclerView with FirestoreDB via the ViewModel
-        val viewModel : ProjectViewModel by viewModels()
+        val viewModel: ProjectViewModel by viewModels()
         viewModel.getProjects().observe(this, { projects ->
-            binding.recyclerView.adapter = ProjectAdapter(this, projects)
+            binding.recyclerView.adapter = ProjectAdapter(this, projects, this)
 //            binding.linearLayout.removeAllViews()
 //            for (project in projects)
 //            {
@@ -64,4 +71,10 @@ class CreateProjectActivity : AppCompatActivity() {
 //            }
         })
     }
+
+    override fun projectSelected(project: Project) {
+        Toast.makeText(this, "Project Selected: $project", Toast.LENGTH_LONG).show()
+    }
+
 }
+

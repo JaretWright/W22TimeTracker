@@ -8,7 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class ProjectAdapter (val context : Context,
-                      val projects : List<Project>
+                      val projects : List<Project>,
+                      val itemListener : ProjectItemListener
                       ) : RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>(){
 
     /**
@@ -38,6 +39,9 @@ class ProjectAdapter (val context : Context,
         with(viewHolder){
             projectTextView.text = project.projectName
             descriptionTextView.text = project.description
+            itemView.setOnClickListener {
+                itemListener.projectSelected(project)
+            }
         }
     }
 
@@ -46,6 +50,17 @@ class ProjectAdapter (val context : Context,
      */
     override fun getItemCount(): Int {
         return projects.size
+    }
+
+
+    //In Java
+    // public interface ProjectItemListener
+    //{
+    //  public projectSelected(Project project)
+    // }
+
+    interface ProjectItemListener{
+        fun projectSelected(project : Project)
     }
 
 }
