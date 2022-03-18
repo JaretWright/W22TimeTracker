@@ -3,6 +3,8 @@ package com.constantlearningdad.w22timetracker
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -70,7 +72,44 @@ class CreateProjectActivity : AppCompatActivity(), ProjectAdapter.ProjectItemLis
 //                binding.linearLayout.addView(newProjectTextView)
 //            }
         })
+
+        //configure the toolbar to hold the main_menu
+        setSupportActionBar(binding.mainToolBar.toolbar)
     }
+
+    /**
+     * Add the menu to the toolbar
+     */
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    /**
+     * This method will navigate to the appropriate activity when an icon is selected in the toolbar
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_log_time -> {
+                startActivity(Intent(applicationContext, LogTimeActivity::class.java))
+                return true
+            }
+            R.id.action_add_project -> {
+//                startActivity(Intent(applicationContext, CreateProjectActivity::class.java))
+                return true
+            }
+            R.id.action_view_summary -> {
+                //page to be created
+                return true
+            }
+            R.id.action_edit_profile -> {
+                //page to be created
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     override fun projectSelected(project: Project) {
         var intent = Intent(this, LogTimeActivity::class.java)

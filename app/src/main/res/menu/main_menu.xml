@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_add_project"
+        android:icon="@drawable/ic_baseline_add_box_24"
+        android:title="@string/add_new_project"
+        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_view_summary"
+        android:icon="@drawable/ic_baseline_format_list_bulleted_24"
+        android:title="@string/very_project_summary"
+        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_log_time"
+        android:icon="@drawable/ic_baseline_timer_24"
+        android:title="@string/log_time"
+        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_edit_profile"
+        android:icon="@drawable/ic_baseline_account_box_24"
+        android:title="@string/edit_profile"
+        app:showAsAction="ifRoom"/>
+</menu>

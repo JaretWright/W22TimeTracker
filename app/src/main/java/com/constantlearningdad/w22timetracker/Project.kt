@@ -15,4 +15,15 @@ class Project (
         else
             return "undefined"
     }
+
+    /**
+     * This method allows for a TimeRecord object to be added to the project
+     */
+    fun addTimeRecord(newRecord : TimeRecord)
+    {
+        if (timeRecords == null)
+            timeRecords = ArrayList<TimeRecord>()
+
+        timeRecords!!.add(newRecord)
+    }
 }
