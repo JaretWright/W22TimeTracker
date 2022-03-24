@@ -99,11 +99,11 @@ class CreateProjectActivity : AppCompatActivity(), ProjectAdapter.ProjectItemLis
                 return true
             }
             R.id.action_view_summary -> {
-                //page to be created
+                startActivity(Intent(applicationContext, SummaryActivity::class.java))
                 return true
             }
             R.id.action_edit_profile -> {
-                //page to be created
+                startActivity(Intent(applicationContext, ProfileActivity::class.java))
                 return true
             }
         }
