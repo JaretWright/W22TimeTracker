@@ -21,4 +21,7 @@
     <string name="under_construction">Under Construction</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="add_a_location_to_the_activity">Add a location to the activity</string>
+    <string name="enter_address">Enter Address</string>
+    <string name="search">Search</string>
+    <string name="save_location">Save Location</string>
 </resources>

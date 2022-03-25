@@ -1,9 +1,14 @@
 package com.constantlearningdad.w22timetracker
 
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -34,12 +39,35 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val projectID = intent.getStringExtra("projectID")
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        binding.saveLocationButton.setOnClickListener {
+            var intent = Intent(this, LogTimeActivity::class.java)
+            intent.putExtra("projectID", projectID)
+//            intent.putExtra("latLng", lastLocation.toString())
+            startActivity(intent)
+        }
+
+        binding.searchButton.setOnClickListener {
+            var address =binding.addressEditText.text.toString()
+            if (address.isNotEmpty())
+            {
+                var location = getLocationFromAddress(this, address)
+                if (location != null)
+                {
+                    placeMarkerOnMap(location)
+                }
+                else
+                    Toast.makeText(this,"Location not found", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     /**
@@ -96,5 +124,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(marker)
 //        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12f)) //up to 22 zoom levels
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 12f))
+    }
+
+    // address string to lat/long location
+    // https://stackoverflow.com/questions/24352192/android-google-maps-add-marker-by-address/34562369#34562369
+    private fun getLocationFromAddress(context: Context?, strAddress: String?): LatLng? {
+        val coder = Geocoder(context)
+        val address: List<Address>?
+        var p1: LatLng? = null
+        try {
+            address = coder.getFromLocationName(strAddress, 5)
+            if (address == null) {
+                return null
+            }
+            val location: Address = address[0]
+            location.latitude
+            location.longitude
+            p1 = LatLng(location.latitude, location.longitude)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return p1
     }
 }

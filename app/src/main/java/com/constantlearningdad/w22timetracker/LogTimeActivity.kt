@@ -3,6 +3,7 @@ package com.constantlearningdad.w22timetracker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -20,6 +21,11 @@ class LogTimeActivity : AppCompatActivity() {
 
         //get the course information and update the header
         val projectID = intent.getStringExtra("projectID")
+        val latLng = intent.getStringExtra("latLng")
+        latLng?.let {
+            Log.i("location", "returned from maps -> $latLng")
+        }
+
         if (projectID == null)
         {
             Toast.makeText(this,"Select a Project to Log time", Toast.LENGTH_LONG).show()
@@ -95,7 +101,6 @@ class LogTimeActivity : AppCompatActivity() {
             intent.putExtra("projectID", projectID)
             startActivity(intent)
         }
-
 
         //configure the toolbar to hold the main_menu
         setSupportActionBar(binding.mainToolBar.toolbar)
