@@ -20,6 +20,12 @@ class LogTimeActivity : AppCompatActivity() {
 
         //get the course information and update the header
         val projectID = intent.getStringExtra("projectID")
+        if (projectID == null)
+        {
+            Toast.makeText(this,"Select a Project to Log time", Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, CreateProjectActivity::class.java))
+        }
+
         val db = FirebaseFirestore.getInstance().collection("projects")
         var project = Project()
 
@@ -82,6 +88,15 @@ class LogTimeActivity : AppCompatActivity() {
                     .show()
             }
         }
+
+        //setup a click listener for the floating action button to navigate to the maps activity
+        binding.mapsButton.setOnClickListener {
+            var intent = Intent(this, MapsActivity::class.java)
+            intent.putExtra("projectID", projectID)
+            startActivity(intent)
+        }
+
+
         //configure the toolbar to hold the main_menu
         setSupportActionBar(binding.mainToolBar.toolbar)
     }

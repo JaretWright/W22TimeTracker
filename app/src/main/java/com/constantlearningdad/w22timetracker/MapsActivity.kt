@@ -1,7 +1,10 @@
 package com.constantlearningdad.w22timetracker
 
+import android.content.pm.PackageManager
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -10,11 +13,20 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.constantlearningdad.w22timetracker.databinding.ActivityMapsBinding
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
-
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private lateinit var fusedLocationClient : FusedLocationProviderClient
+    private lateinit var lastLocation : Location
+
+    //The Java equivalent is private static final LOCATION_PERMISSION_REQUEST_CODE = 1;
+    companion object{
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1;
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +38,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     /**
@@ -41,8 +55,46 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val location = LatLng(44.4116, -79.6683)
+        mMap.addMarker(MarkerOptions().position(location).title("Lakehead @ Georgian"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12f)) //up to 22 zoom levels
+        mMap.uiSettings.isZoomControlsEnabled = true
+
+        setUpMap()
+    }
+
+    private fun setUpMap()
+    {
+        mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+
+        //check if the user gave us permission to access the location of the device running the app
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                                                            LOCATION_PERMISSION_REQUEST_CODE)
+            return
+        }
+
+        mMap.isMyLocationEnabled = true
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
+            location?.let{ currentLocation ->
+                lastLocation = currentLocation
+                val currentLatLng = LatLng(currentLocation.latitude, currentLocation.longitude)
+                placeMarkerOnMap(currentLatLng)
+            }
+        }
+    }
+
+    /**
+     * This method will place a marker on the Google Map at the lat and long provided
+     */
+    private fun placeMarkerOnMap(location : LatLng)
+    {
+        val marker = MarkerOptions().position(location)
+        mMap.addMarker(marker)
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12f)) //up to 22 zoom levels
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 12f))
     }
 }
