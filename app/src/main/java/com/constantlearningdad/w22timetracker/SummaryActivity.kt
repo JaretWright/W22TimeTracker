@@ -34,7 +34,7 @@ class SummaryActivity : AppCompatActivity() {
         val projects : MutableList<Project?> = ArrayList()
 
         //create an adapter for the spinner so that we can change the ArrayList in the spinner
-        val adapter = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_item, projects)
+        val adapter = ArrayAdapter(applicationContext, R.layout.spinner_item, projects)
         binding.projectSelectSpinner.adapter = adapter
 
         db.whereEqualTo("uid", userID)

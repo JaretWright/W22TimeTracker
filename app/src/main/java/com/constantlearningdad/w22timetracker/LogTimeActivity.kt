@@ -6,9 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.constantlearningdad.w22timetracker.databinding.ActivityLogTimeBinding
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class LogTimeActivity : AppCompatActivity() {
@@ -21,28 +25,66 @@ class LogTimeActivity : AppCompatActivity() {
 
         //get the course information and update the header
         val projectID = intent.getStringExtra("projectID")
-        val latLng = intent.getStringExtra("latLng")
-        latLng?.let {
-            Log.i("location", "returned from maps -> $latLng")
-        }
-
-        if (projectID == null)
-        {
-            Toast.makeText(this,"Select a Project to Log time", Toast.LENGTH_LONG).show()
-            startActivity(Intent(this, CreateProjectActivity::class.java))
-        }
 
         val db = FirebaseFirestore.getInstance().collection("projects")
-        var project = Project()
 
-        db.whereEqualTo("id", projectID)
+        //query the firestore database to get all the projects for the active user
+        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+
+        if (userID == null)
+        {
+            finish()
+            startActivity(Intent(this, SigninActivity::class.java))
+        }
+
+        //create a mutable (changeable) list of Project objects
+        val projects : MutableList<Project?> = ArrayList()
+
+        //create an adapter for the spinner so that we can change the ArrayList in the spinner
+        val adapter = ArrayAdapter(applicationContext, R.layout.spinner_item, projects)
+        binding.projectSelectSpinner.adapter = adapter
+
+        db.whereEqualTo("uid", userID)
+            .orderBy("projectName")
             .get()
-            .addOnSuccessListener { querySnapShot ->
-                for (document in querySnapShot) {
-                    project = document.toObject(Project::class.java)
-                    binding.projectTextView.text = project.projectName
+            .addOnSuccessListener { querySnapshot ->
+                projects.add(Project(projectName="Choose a Project"))
+                for (document in querySnapshot)
+                {
+                    val project = document.toObject(Project::class.java)
+                    projects.add(project)
                 }
+                //if we have a projectID from the intent, set the spinner with it
+                projectID?.let {
+                    var projectSelected = Project()
+                    for (project in projects)
+                    {
+                        if (project!!.id.equals(projectID))
+                            projectSelected =project
+                    }
+                    if (projectSelected.id.equals(projectID))
+                        binding.projectSelectSpinner.setSelection(projects.indexOf(projectSelected))
+                }
+                adapter.notifyDataSetChanged()
             }
+
+        var project = Project()
+        //create a "listener" for the spinner
+        binding.projectSelectSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Log.i(
+                    "Spinner",
+                    "position = $position, which is project: ${projects.get(position)}"
+                )
+
+                project = projects.get(position)!!
+
+                }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+//                TODO("Not yet implemented")
+            }
+        }
 
         //variables to store the category, start & stop times
         var startTime: Timestamp? = null

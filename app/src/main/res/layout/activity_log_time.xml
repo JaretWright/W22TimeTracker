@@ -15,16 +15,14 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <TextView
-        android:id="@+id/projectTextView"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:id="@+id/projectSelectSpinner"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/std_margin"
-        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mainToolBar"
-        tools:text="COMP3025-Major Project" />
+        app:layout_constraintTop_toBottomOf="@+id/mainToolBar"
+        />
 
     <Spinner
         android:id="@+id/spinner"
@@ -32,9 +30,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/std_margin"
         android:entries="@array/categories"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/projectTextView"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/projectSelectSpinner" />
 
     <Button
         android:id="@+id/startButton"
