@@ -24,4 +24,12 @@
     <string name="enter_address">Enter Address</string>
     <string name="search">Search</string>
     <string name="save_location">Save Location</string>
+    <string name="category">Category</string>
+    <string name="minutes">Minutes</string>
+    <string name="research">Research</string>
+    <string name="design">Design</string>
+    <string name="development">Development</string>
+    <string name="testing">Testing</string>
+    <string name="other">Other</string>
+    <string name="total">Total</string>
 </resources>

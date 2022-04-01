@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainToolBar" />
+        app:layout_constraintTop_toBottomOf="@+id/mainToolBar"
+        />
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -39,14 +40,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Category"
+                android:text="@string/category"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="Minutes"
+                android:text="@string/minutes"
                 android:textStyle="bold" />
         </TableRow>
 
@@ -57,7 +58,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Research" />
+                android:text="@string/research" />
 
             <TextView
                 android:id="@+id/researchMinTextView"
@@ -74,7 +75,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Design" />
+                android:text="@string/design" />
 
             <TextView
                 android:id="@+id/designMinTextView"
@@ -91,7 +92,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Development" />
+                android:text="@string/development" />
 
             <TextView
                 android:id="@+id/developmentMinTextView"
@@ -108,7 +109,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Testing" />
+                android:text="@string/testing" />
 
             <TextView
                 android:id="@+id/testingMinTextView"
@@ -125,7 +126,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Other" />
+                android:text="@string/other" />
 
             <TextView
                 android:id="@+id/otherMinTextView"
@@ -142,10 +143,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total"
+                android:text="@string/total"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/totalMinTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
